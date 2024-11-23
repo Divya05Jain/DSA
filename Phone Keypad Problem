@@ -1,0 +1,54 @@
+class Solution {
+public:
+    // This helper function does the actual work of generating combinations.
+    // It takes the current index, the output string we're building, and uses recursion to explore all possibilities.
+    void solve(vector<string> &ans, int index, string output, string digits, vector<string> &mapping) {
+        // Base case: If we've gone through all the digits, add the current combination to the result.
+        if (index >= digits.length()) {
+            ans.push_back(output);
+            return;
+        }
+
+        // Grab the digit at the current index and figure out what letters it maps to.
+        char digitCharacter = digits[index];      // The current digit as a char
+        int digitInteger = digitCharacter - '0';  // Convert it to an integer (e.g., '2' -> 2)
+        string value = mapping[digitInteger];     // Get the corresponding string of letters (e.g., "abc" for 2)
+
+        // Loop through each letter that this digit can represent.
+        for (int i = 0; i < value.length(); i++) {
+            char ch = value[i]; // Take one letter at a time
+
+            // Add this letter to the combination we're building and move on to the next digit.
+            solve(ans, index + 1, output + ch, digits, mapping);
+        }
+    }
+
+    // Main function to handle the input and kick off the recursive process.
+    vector<string> letterCombinations(string digits) {
+        vector<string> ans; // This will hold all the combinations.
+
+        // If the input is empty, just return an empty result right away.
+        if (digits.length() == 0)
+            return ans;
+
+        // A few things we need to set up: starting index, an empty string for building combinations,
+        // and the mapping of digits to letters (like the buttons on an old phone).
+        int index = 0;
+        string output = "";
+        vector<string> mapping(10);
+        mapping[2] = "abc";
+        mapping[3] = "def";
+        mapping[4] = "ghi";
+        mapping[5] = "jkl";
+        mapping[6] = "mno";
+        mapping[7] = "pqrs";
+        mapping[8] = "tuv";
+        mapping[9] = "wxyz";
+
+        // Call the helper function to start the recursive process.
+        solve(ans, index, output, digits, mapping);
+
+        // Return the list of all possible combinations.
+        return ans;
+    }
+};
